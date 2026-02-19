@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import type { LockFunc } from '@supabase/auth-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -8,8 +9,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 /** No-op lock to avoid Navigator LockManager timeout (e.g. with React Strict Mode / multiple tabs). */
-const lockNoOp: (name: string, acquireTimeout: number, fn: () => Promise<unknown>) => Promise<unknown> =
-  async (_name, _acquireTimeout, fn) => fn();
+const lockNoOp: LockFunc = async (_name, _acquireTimeout, fn) => fn();
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: { lock: lockNoOp },
