@@ -70,6 +70,32 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## Deploying to Vercel (why the build might fail)
+
+The build can fail for two main reasons:
+
+### 1. **Type error: `LockFunc` / `lock`**
+
+If you see a TypeScript error about `lock` or `Promise<unknown>` in `lib/supabase.ts`, the code on the branch you’re deploying (e.g. `main` on GitHub) is likely **out of date**. Fix:
+
+- Commit and push the latest code from this repo (including the `lockNoOp` generic in `lib/supabase.ts`) to the same branch Vercel builds from (e.g. `main` on `Ethiopica/Book-MGMT`).
+
+### 2. **Missing environment variables**
+
+The build needs Supabase env vars at build time. If they’re missing, you’ll see errors like **"Missing Supabase environment variables"** or **"supabaseUrl is required"**.
+
+**Fix:** In Vercel, go to your project → **Settings** → **Environment Variables** and add (for Production, and optionally Preview/Development):
+
+| Name | Value |
+|------|--------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anon/public key |
+| `NEXT_PUBLIC_ADMIN_EMAIL` | Admin email (e.g. for nav) |
+| `ADMIN_EMAIL` | Same admin email (for API checks) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key (for admin APIs; keep secret) |
+
+Redeploy after adding or changing variables.
+
 ## Database Schema
 
 ### Books Table

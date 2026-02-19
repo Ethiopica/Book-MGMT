@@ -4,14 +4,16 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
+  throw new Error('Missing Supabase environment variables (NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY). Set them in Vercel → Project → Settings → Environment Variables.');
 }
 
 /** No-op lock to avoid Navigator LockManager timeout (e.g. with React Strict Mode / multiple tabs). */
-const lockNoOp = async <R,>(_name: string, _acquireTimeout: number, fn: () => Promise<R>): Promise<R> => fn();
+function lockNoOp<R>(_name: string, _acquireTimeout: number, fn: () => Promise<R>): Promise<R> {
+  return fn();
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: { lock: lockNoOp },
+  auth: { lock: lockNoOp as any },
 });
 
 // Database types
