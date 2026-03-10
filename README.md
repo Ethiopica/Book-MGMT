@@ -13,6 +13,7 @@ A modern web application for managing a church library, built with Next.js and S
 - 📊 **Book Status**: Real-time status tracking (Available/Borrowed)
 - ⏱️ **Days Out Counter**: Automatically calculates how many days a book has been borrowed
 - 📝 **Lending Form**: Easy-to-use form for lending books with borrower information
+- 📧 **Borrower notifications**: Optional email confirmation when a book is lent (borrowers can open it on their phone); uses [Resend](https://resend.com)
 - 🎨 **Modern UI**: Beautiful, responsive design with Tailwind CSS
 
 ## Tech Stack
@@ -61,6 +62,12 @@ npm install
    SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
    ```
    Use your own email for `NEXT_PUBLIC_ADMIN_EMAIL` and `ADMIN_EMAIL` (same value). Get the service role key from Supabase Dashboard → Settings → API → `service_role` (keep it secret).
+
+4. **Borrower email notifications (optional)**  
+   To send a confirmation email to borrowers when a book is lent (they can open it on their phone), add to `.env.local`:
+   - `RESEND_API_KEY` – get a key at [resend.com](https://resend.com) → API Keys.  
+   Without this, lending still works; no email is sent.  
+   **To send to anyone (not just your own email):** Resend’s default sender only allows sending to your own address. Verify a domain at [resend.com/domains](https://resend.com/domains), then set `RESEND_FROM_EMAIL=Church Library <library@yourchurch.org>` (or another address on that domain).
 
 ### 4. Run the Development Server
 

@@ -3,6 +3,7 @@ import "./globals.css";
 import Nav from "@/components/Nav";
 import { AuthProvider } from "@/components/AuthProvider";
 import { LanguageProvider } from "@/components/LanguageProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "በኢትዮጵያ ኦርቶዶክስ ተዋሕዶ ቤተክርስቲያን · Church Library",
@@ -23,13 +24,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
-        <LanguageProvider>
-          <AuthProvider>
-            <Nav />
-            {children}
-          </AuthProvider>
-        </LanguageProvider>
+      <body className="antialiased bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+        <ThemeProvider>
+          <LanguageProvider>
+            <AuthProvider>
+              <Nav />
+              {children}
+            </AuthProvider>
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

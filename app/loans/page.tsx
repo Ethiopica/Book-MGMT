@@ -38,12 +38,17 @@ export default function LoansPage() {
       setLoading(true);
       const { data, error } = await supabase
         .from('loans')
-        .select('*, books(*), borrowers(*)')
+        .select('*, books(*), borrower:borrowers(*)')
         .eq('status', 'borrowed')
         .order('borrowed_date', { ascending: false });
 
       if (error) throw error;
-      setLoans((data as LoanWithDetails[]) || []);
+      // Normalize: API returns borrower (alias); we use borrowers in type for compatibility
+      const normalized = (data || []).map((row: any) => ({
+        ...row,
+        borrowers: row.borrower ?? row.borrowers ?? null,
+      }));
+      setLoans(normalized as LoanWithDetails[]);
     } catch (err) {
       console.error('Error fetching loans:', err);
       setLoans([]);
@@ -87,28 +92,28 @@ export default function LoansPage() {
 
   if (authLoading || !user || !isApproved) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-        <p className="text-gray-600">{t('libraryLoading')}</p>
+      <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
+        <p className="text-gray-600 dark:text-slate-400">{t('libraryLoading')}</p>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800">
       <div className="container mx-auto px-3 py-6 sm:px-4 sm:py-8">
         <header className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-1 sm:mb-2">{t('loanedBooksTitle')}</h1>
-          <p className="text-sm sm:text-base text-gray-600">{t('loanedBooksSubtitle')}</p>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-slate-100 mb-1 sm:mb-2">{t('loanedBooksTitle')}</h1>
+          <p className="text-sm sm:text-base text-gray-600 dark:text-slate-400">{t('loanedBooksSubtitle')}</p>
         </header>
 
         {loading ? (
-          <div className="flex justify-center items-center min-h-[280px] sm:min-h-[300px] text-gray-600 text-base sm:text-lg">
+          <div className="flex justify-center items-center min-h-[280px] sm:min-h-[300px] text-gray-600 dark:text-slate-400 text-base sm:text-lg">
             {t('loadingLoanedBooks')}
           </div>
         ) : loans.length === 0 ? (
-          <div className="bg-white rounded-xl shadow p-6 sm:p-8 text-center">
-            <p className="text-gray-600 text-base sm:text-lg">{t('noLoans')}</p>
-            <Link href="/library" className="mt-4 inline-block text-blue-600 hover:underline min-h-[44px] flex items-center justify-center">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow p-6 sm:p-8 text-center">
+            <p className="text-gray-600 dark:text-slate-400 text-base sm:text-lg">{t('noLoans')}</p>
+            <Link href="/library" className="mt-4 inline-block text-blue-600 dark:text-sky-400 hover:underline min-h-[44px] flex items-center justify-center">
               {t('browseLibrary')}
             </Link>
           </div>

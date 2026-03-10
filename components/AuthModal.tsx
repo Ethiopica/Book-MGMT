@@ -61,17 +61,17 @@ export default function AuthModal({ onClose, defaultMode = 'login', onSuccess }:
   return (
     <div className="fixed inset-0 bg-black/60 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4" onClick={onClose}>
       <div
-        className="bg-white w-full max-h-[90vh] sm:max-h-none sm:rounded-2xl shadow-2xl sm:max-w-md overflow-y-auto rounded-t-2xl sm:rounded-b-2xl p-4 sm:p-6 pb-[calc(1rem+env(safe-area-inset-bottom))]"
+        className="bg-white dark:bg-slate-800 w-full max-h-[90vh] sm:max-h-none sm:rounded-2xl shadow-2xl sm:max-w-md overflow-y-auto rounded-t-2xl sm:rounded-b-2xl p-4 sm:p-6 pb-[calc(1rem+env(safe-area-inset-bottom))]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-4 sm:mb-6 gap-2">
-          <h2 className="text-lg sm:text-xl font-bold text-gray-900">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-slate-100">
             {mode === 'login' ? t('authLogIn') : t('authCreateAccount')}
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="touch-target shrink-0 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 text-xl"
+            className="touch-target shrink-0 w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 flex items-center justify-center text-gray-600 dark:text-slate-300 text-xl"
             aria-label={t('authClose')}
           >
             ×

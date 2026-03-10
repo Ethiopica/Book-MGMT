@@ -85,6 +85,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     // Lending form
     lendBook: 'Lend Book',
     bookLentSuccess: 'Book lent successfully!',
+    confirmationSentToEmail: 'A confirmation was sent to their email (they can open it on their phone).',
     formCloseAuto: 'The form will close automatically.',
     firstName: 'First Name',
     lastName: 'Last Name',
@@ -102,6 +103,12 @@ export const translations: Record<Locale, Record<string, string>> = {
     borrowedBy: 'Borrowed by:',
     borrowedOn: 'Borrowed on:',
     markAsReturned: 'Mark as returned',
+    sendReminder: 'Send reminder to borrower',
+    sendReminderNoEmail: 'Borrower email is required to send a reminder.',
+    sendingReminder: 'Sending...',
+    reminderSent: 'Reminder sent to their email.',
+    reminderFailed: 'Could not send reminder.',
+    reminderDomainRequired: 'To send to borrowers, verify a domain at resend.com/domains and set RESEND_FROM_EMAIL.',
     updating: 'Updating...',
     unknownBook: 'Unknown book',
     // Admin
@@ -196,6 +203,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     // Lending form
     lendBook: 'መጽሃፍ አበድር',
     bookLentSuccess: 'መጽሃፍ በተሳካ ሁኔታ ተበድሯል!',
+    confirmationSentToEmail: 'ማረጋገጫ ወደ ኢሜይላቸው ተላክቷል (በስልካቸው ላይ ሊከፈት ይችላል)።',
     formCloseAuto: 'ቅጹ በራሱ ይዘጋል።',
     firstName: 'የመጀመሪያ ስም',
     lastName: 'የአባት ስም',
@@ -206,13 +214,19 @@ export const translations: Record<Locale, Record<string, string>> = {
     // Loans page
     loanedBooksTitle: 'የተበዳ መጽሃፍት',
     loanedBooksSubtitle: 'በብድር ላይ ያሉ መጽሃፍትን ይመልከቱ እና ያስተዳድሩ',
-    loadingLoanedBooks: 'የተበዳ መጽሃፍት በመጫን ላይ...',
+    loadingLoanedBooks: 'በብድር ላይ ያሉ መጽሃፍትን በመጫን ላይ...',
     noLoans: 'በአሁኑ ጊዜ በብድር ላይ ምንም መጽሃፍ የለም።',
     browseLibrary: 'ቤተ መጽሃፍ ይመልከቱ',
     // Loan detail
-    borrowedBy: 'በተበዳለት:',
-    borrowedOn: 'በብድር የወሰደበት:',
+    borrowedBy: 'የተዋሰው ሰው:',
+    borrowedOn: 'የተዋሰበት:',
     markAsReturned: 'ተመልሷል ምልክት አድርግ',
+    sendReminder: 'ማስታወሻ ላክ',
+    sendReminderNoEmail: 'ማስታወሻ ለመላክ የተበዳሪው ኢሜይል ያስፈልጋል።',
+    sendingReminder: 'በመላክ ላይ...',
+    reminderSent: 'ማስታወሻ ወደ ኢሜይላቸው ተላክቷል።',
+    reminderFailed: 'ማስታወሻ ማስተላለፍ አልተሳካም።',
+    reminderDomainRequired: 'ለተበዳሪዎች ለመላክ በresend.com/domains ጎራ ያረጋግጡ እና RESEND_FROM_EMAIL ያስቀምጡ።',
     updating: 'በማዘመን ላይ...',
     unknownBook: 'ያልታወቀ መጽሃፍ',
     // Admin

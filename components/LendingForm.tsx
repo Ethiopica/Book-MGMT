@@ -21,6 +21,7 @@ export default function LendingForm({ book, onClose }: LendingFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [notificationSent, setNotificationSent] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -86,6 +87,26 @@ export default function LendingForm({ book, onClose }: LendingFormProps) {
 
       if (loanError) throw loanError;
 
+      // Send confirmation to borrower's email (they can open it on their phone)
+      const borrowerName = [formData.firstName, formData.lastName].filter(Boolean).join(' ') || undefined;
+      try {
+        const notifyRes = await fetch('/api/notify-borrower', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: formData.email,
+            bookTitle: book.title,
+            borrowerName,
+          }),
+        });
+        if (notifyRes.ok) {
+          const data = await notifyRes.json();
+          setNotificationSent(!!data.sent);
+        }
+      } catch (_) {
+        // Don't fail the form if notification fails
+      }
+
       setSuccess(true);
       setTimeout(() => {
         onClose();
@@ -122,6 +143,9 @@ export default function LendingForm({ book, onClose }: LendingFormProps) {
             <div className="text-center py-8">
               <div className="text-green-500 text-5xl mb-4">✓</div>
               <p className="text-lg font-semibold text-gray-900">{t('bookLentSuccess')}</p>
+              {notificationSent && (
+                <p className="text-gray-600 mt-2">{t('confirmationSentToEmail')}</p>
+              )}
               <p className="text-gray-600 mt-2">{t('formCloseAuto')}</p>
             </div>
           ) : (
