@@ -24,7 +24,7 @@ export default function LoanDetailModal({
 }: LoanDetailModalProps) {
   const { t } = useLanguage();
   const [sendingReminder, setSendingReminder] = useState(false);
-  const [reminderMessage, setReminderMessage] = useState<'sent' | 'failed' | 'domain_required' | null>(null);
+  const [reminderMessage, setReminderMessage] = useState<'sent' | 'failed' | null>(null);
   const book = loan.books;
   // Supabase may return relation as "borrowers" or "borrower" (singular for FK borrower_id), or as array
   const borrowerRaw = loan.borrowers ?? (loan as { borrower?: Borrower | null }).borrower;
@@ -49,7 +49,6 @@ export default function LoanDetailModal({
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.sent) setReminderMessage('sent');
-      else if (data.reason === 'domain_not_verified') setReminderMessage('domain_required');
       else setReminderMessage('failed');
     } catch {
       setReminderMessage('failed');
@@ -133,9 +132,6 @@ export default function LoanDetailModal({
             )}
             {reminderMessage === 'failed' && (
               <p className="text-sm text-red-600 mb-3">{t('reminderFailed')}</p>
-            )}
-            {reminderMessage === 'domain_required' && (
-              <p className="text-sm text-amber-700 bg-amber-50 rounded-lg p-3 mb-3">{t('reminderDomainRequired')}</p>
             )}
             <div className="flex flex-wrap gap-3">
               <button

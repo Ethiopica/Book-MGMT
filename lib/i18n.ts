@@ -99,6 +99,10 @@ export const translations: Record<Locale, Record<string, string>> = {
     loadingLoanedBooks: 'Loading loaned books...',
     noLoans: 'No books currently on loan.',
     browseLibrary: 'Browse library',
+    sendRemindersAll: 'Send reminders to all borrowers',
+    sendingRemindersAll: 'Sending reminders...',
+    remindersAllOk: 'Reminders sent to all borrowers with an email.',
+    remindersAllSomeFailed: 'Some reminders could not be sent.',
     // Loan detail
     borrowedBy: 'Borrowed by:',
     borrowedOn: 'Borrowed on:',
@@ -108,7 +112,6 @@ export const translations: Record<Locale, Record<string, string>> = {
     sendingReminder: 'Sending...',
     reminderSent: 'Reminder sent to their email.',
     reminderFailed: 'Could not send reminder.',
-    reminderDomainRequired: 'To send to borrowers, verify a domain at resend.com/domains and set RESEND_FROM_EMAIL.',
     updating: 'Updating...',
     unknownBook: 'Unknown book',
     // Admin
@@ -217,6 +220,10 @@ export const translations: Record<Locale, Record<string, string>> = {
     loadingLoanedBooks: 'በብድር ላይ ያሉ መጽሃፍትን በመጫን ላይ...',
     noLoans: 'በአሁኑ ጊዜ በብድር ላይ ምንም መጽሃፍ የለም።',
     browseLibrary: 'ቤተ መጽሃፍ ይመልከቱ',
+    sendRemindersAll: 'ለሁሉም ተበዳሪዎች ማስታወሻ ላክ',
+    sendingRemindersAll: 'ማስታወሻዎችን በመላክ ላይ...',
+    remindersAllOk: 'ማስታወሻዎች ለኢሜይል ያላቸው ሁሉም ተበዳሪዎች ተላኩ።',
+    remindersAllSomeFailed: 'አንዳንድ ማስታወሻዎች መላክ አልተሳካም።',
     // Loan detail
     borrowedBy: 'የተዋሰው ሰው:',
     borrowedOn: 'የተዋሰበት:',
@@ -226,7 +233,6 @@ export const translations: Record<Locale, Record<string, string>> = {
     sendingReminder: 'በመላክ ላይ...',
     reminderSent: 'ማስታወሻ ወደ ኢሜይላቸው ተላክቷል።',
     reminderFailed: 'ማስታወሻ ማስተላለፍ አልተሳካም።',
-    reminderDomainRequired: 'ለተበዳሪዎች ለመላክ በresend.com/domains ጎራ ያረጋግጡ እና RESEND_FROM_EMAIL ያስቀምጡ።',
     updating: 'በማዘመን ላይ...',
     unknownBook: 'ያልታወቀ መጽሃፍ',
     // Admin

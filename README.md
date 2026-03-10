@@ -63,11 +63,12 @@ npm install
    ```
    Use your own email for `NEXT_PUBLIC_ADMIN_EMAIL` and `ADMIN_EMAIL` (same value). Get the service role key from Supabase Dashboard → Settings → API → `service_role` (keep it secret).
 
-4. **Borrower email notifications (optional)**  
+4. **Borrower email notifications (optional, Nodemailer + Gmail SMTP)**  
    To send a confirmation email to borrowers when a book is lent (they can open it on their phone), add to `.env.local`:
-   - `RESEND_API_KEY` – get a key at [resend.com](https://resend.com) → API Keys.  
-   Without this, lending still works; no email is sent.  
-   **To send to anyone (not just your own email):** Resend’s default sender only allows sending to your own address. Verify a domain at [resend.com/domains](https://resend.com/domains), then set `RESEND_FROM_EMAIL=Church Library <library@yourchurch.org>` (or another address on that domain).
+   - `EMAIL_USER` – your Gmail address, e.g. `yourgmailaddress@gmail.com`.  
+   - `EMAIL_PASS` – a Gmail **app password** for that account (recommended; don’t use your normal password).  
+   - (Optional) `NOTIFY_FROM_EMAIL` – custom From header, e.g. `Church Library <yourgmailaddress@gmail.com>`. If omitted, `EMAIL_USER` is used.  
+   Without these, lending still works; no email is sent.
 
 ### 4. Run the Development Server
 
