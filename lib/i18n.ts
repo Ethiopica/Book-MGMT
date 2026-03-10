@@ -212,7 +212,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     processing: 'በማስኬድ ላይ...',
     errorProcessingLoan: 'ብድር በማስኬድ ላይ ስህተት ተፈጥሯል',
     // Loans page
-    loanedBooksTitle: 'የተበዳ መጽሃፍት',
+    loanedBooksTitle: 'በብድር ላይ ያሉ መጽሃፍት',
     loanedBooksSubtitle: 'በብድር ላይ ያሉ መጽሃፍትን ይመልከቱ እና ያስተዳድሩ',
     loadingLoanedBooks: 'በብድር ላይ ያሉ መጽሃፍትን በመጫን ላይ...',
     noLoans: 'በአሁኑ ጊዜ በብድር ላይ ምንም መጽሃፍ የለም።',
