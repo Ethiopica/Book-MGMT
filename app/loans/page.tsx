@@ -35,9 +35,9 @@ export default function LoansPage() {
     }
   }, [user, authLoading, isApproved, router]);
 
-  const fetchLoans = async () => {
+  const fetchLoans = async (silent = false): Promise<LoanWithDetails[]> => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       const { data, error } = await supabase
         .from('loans')
         .select('*, books(*), borrower:borrowers(*)')
@@ -45,18 +45,28 @@ export default function LoansPage() {
         .order('borrowed_date', { ascending: false });
 
       if (error) throw error;
-      // Normalize: API returns borrower (alias); we use borrowers in type for compatibility
       const normalized = (data || []).map((row: any) => ({
         ...row,
         borrowers: row.borrower ?? row.borrowers ?? null,
-      }));
-      setLoans(normalized as LoanWithDetails[]);
+      })) as LoanWithDetails[];
+      setLoans(normalized);
+      return normalized;
     } catch (err) {
       console.error('Error fetching loans:', err);
       setLoans([]);
+      return [];
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
+  };
+
+  const handleBorrowerUpdated = async () => {
+    const nextLoans = await fetchLoans(true);
+    setDetailLoan((prev) => {
+      if (!prev) return null;
+      const updated = nextLoans.find((l) => l.id === prev.id);
+      return updated ?? prev;
+    });
   };
 
   // Only fetch after auth is ready to avoid lock timeout and RLS errors
@@ -226,6 +236,7 @@ export default function LoansPage() {
                 daysOut={getDaysOut(detailLoan.borrowed_date)}
                 onClose={() => setDetailLoan(null)}
                 onMarkReturned={() => handleMarkReturned(detailLoan.id)}
+                onBorrowerUpdated={handleBorrowerUpdated}
                 isReturning={returningId === detailLoan.id}
               />
             )}

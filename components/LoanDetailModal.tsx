@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import type { Loan, Book, Borrower } from '@/lib/supabase';
 import { useLanguage } from '@/components/LanguageProvider';
+import EditBorrowerForm from '@/components/EditBorrowerForm';
 
 type LoanWithDetails = Loan & { books: Book | null; borrowers: Borrower | null };
 
@@ -12,6 +13,7 @@ interface LoanDetailModalProps {
   daysOut: number;
   onClose: () => void;
   onMarkReturned: () => void;
+  onBorrowerUpdated?: () => void;
   isReturning: boolean;
 }
 
@@ -20,11 +22,13 @@ export default function LoanDetailModal({
   daysOut,
   onClose,
   onMarkReturned,
+  onBorrowerUpdated,
   isReturning,
 }: LoanDetailModalProps) {
   const { t } = useLanguage();
   const [sendingReminder, setSendingReminder] = useState(false);
   const [reminderMessage, setReminderMessage] = useState<'sent' | 'failed' | null>(null);
+  const [editingBorrower, setEditingBorrower] = useState(false);
   const book = loan.books;
   // Supabase may return relation as "borrowers" or "borrower" (singular for FK borrower_id), or as array
   const borrowerRaw = loan.borrowers ?? (loan as { borrower?: Borrower | null }).borrower;
@@ -107,24 +111,33 @@ export default function LoanDetailModal({
             <span className="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-amber-100 text-amber-800 mb-4">
               {daysOut} {daysOut === 1 ? t('day') : t('days')} out
             </span>
-            <div className="space-y-2 text-sm text-gray-600 mb-6">
+            <div className="space-y-2 text-sm text-gray-600 dark:text-slate-400 mb-6">
               <p>
-                <span className="font-medium text-gray-700">{t('borrowedBy')}</span>{' '}
+                <span className="font-medium text-gray-700 dark:text-slate-300">{t('borrowedBy')}</span>{' '}
                 {borrower ? `${borrower.first_name} ${borrower.last_name}` : '—'}
               </p>
               <p>
-                <span className="font-medium text-gray-700">{t('authEmail')}:</span> {borrower?.email ?? '—'}
+                <span className="font-medium text-gray-700 dark:text-slate-300">{t('authEmail')}:</span> {borrower?.email ?? '—'}
               </p>
               <p>
-                <span className="font-medium text-gray-700">{t('phoneNumber')}:</span> {borrower?.phone ?? '—'}
+                <span className="font-medium text-gray-700 dark:text-slate-300">{t('phoneNumber')}:</span> {borrower?.phone ?? '—'}
               </p>
               <p>
-                <span className="font-medium text-gray-700">{t('borrowedOn')}:</span> {borrowedDate}
+                <span className="font-medium text-gray-700 dark:text-slate-300">{t('borrowedOn')}:</span> {borrowedDate}
               </p>
               {borrower?.address && (
                 <p>
-                  <span className="font-medium text-gray-700">{t('address')}:</span> {borrower.address}
+                  <span className="font-medium text-gray-700 dark:text-slate-300">{t('address')}:</span> {borrower.address}
                 </p>
+              )}
+              {borrower && (
+                <button
+                  type="button"
+                  onClick={() => setEditingBorrower(true)}
+                  className="mt-2 text-sm font-medium text-sky-600 dark:text-sky-400 hover:underline"
+                >
+                  {t('editBorrower')}
+                </button>
               )}
             </div>
             {reminderMessage === 'sent' && (
@@ -155,6 +168,16 @@ export default function LoanDetailModal({
           </div>
         </div>
       </div>
+
+      {editingBorrower && borrower && (
+        <EditBorrowerForm
+          borrower={borrower}
+          onClose={() => setEditingBorrower(false)}
+          onSuccess={() => {
+            onBorrowerUpdated?.();
+          }}
+        />
+      )}
     </div>
   );
 }

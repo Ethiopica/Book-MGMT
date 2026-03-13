@@ -11,6 +11,7 @@ interface BookDetailModalProps {
   daysOut: number;
   onClose: () => void;
   onLend: () => void;
+  onEdit: () => void;
   onDelete: () => void;
   isDeleting?: boolean;
 }
@@ -21,6 +22,7 @@ export default function BookDetailModal({
   daysOut,
   onClose,
   onLend,
+  onEdit,
   onDelete,
   isDeleting = false,
 }: BookDetailModalProps) {
@@ -105,6 +107,13 @@ export default function BookDetailModal({
                 }`}
               >
                 {status === 'available' ? t('lendThisBook') : t('currentlyBorrowed')}
+              </button>
+              <button
+                type="button"
+                onClick={onEdit}
+                className="min-h-[48px] w-full sm:w-auto flex items-center justify-center px-6 py-2.5 rounded-xl font-semibold bg-sky-600 text-white hover:bg-sky-700 transition-colors"
+              >
+                {t('editBook')}
               </button>
               <button
                 type="button"

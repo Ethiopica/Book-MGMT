@@ -96,6 +96,14 @@ export default function Nav() {
                     {t('navLibrary')}
                   </Link>
                   <Link
+                    href="/summary"
+                    className={`font-semibold text-sm lg:text-base whitespace-nowrap ${
+                      pathname === '/summary' ? 'text-sky-700 dark:text-sky-300' : 'text-gray-700 dark:text-gray-300 hover:text-sky-700 dark:hover:text-sky-300'
+                    }`}
+                  >
+                    {t('navSummary')}
+                  </Link>
+                  <Link
                     href="/loans"
                     className={`font-semibold text-sm lg:text-base whitespace-nowrap ${
                       pathname === '/loans' ? 'text-sky-700 dark:text-sky-300' : 'text-gray-700 dark:text-gray-300 hover:text-sky-700 dark:hover:text-sky-300'
@@ -246,6 +254,9 @@ export default function Nav() {
                 <>
                   <Link href="/library" className={navLinkClass(pathname === '/library')} onClick={closeMenu}>
                     {t('navLibrary')}
+                  </Link>
+                  <Link href="/summary" className={navLinkClass(pathname === '/summary')} onClick={closeMenu}>
+                    {t('navSummary')}
                   </Link>
                   <Link href="/loans" className={navLinkClass(pathname === '/loans')} onClick={closeMenu}>
                     {t('navLoanedBooks')}

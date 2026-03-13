@@ -7,6 +7,7 @@ import BookCard from './BookCard';
 import BookDetailModal from './BookDetailModal';
 import LendingForm from './LendingForm';
 import AddBookForm from './AddBookForm';
+import EditBookForm from './EditBookForm';
 
 export default function BookList() {
   const { t } = useLanguage();
@@ -16,6 +17,7 @@ export default function BookList() {
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [detailBook, setDetailBook] = useState<Book | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [editingBook, setEditingBook] = useState<Book | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showAddBookForm, setShowAddBookForm] = useState(false);
 
@@ -85,7 +87,17 @@ export default function BookList() {
   };
 
   const handleAddBookSuccess = () => {
-    fetchBooks(); // Refresh books after adding
+    fetchBooks();
+  };
+
+  const handleEditBook = (book: Book) => {
+    setDetailBook(null);
+    setEditingBook(book);
+  };
+
+  const handleEditBookSuccess = () => {
+    fetchBooks();
+    setEditingBook(null);
   };
 
   const handleDeleteBook = async (book: Book) => {
@@ -151,6 +163,7 @@ export default function BookList() {
             handleCloseDetail();
             handleLendBook(detailBook);
           }}
+          onEdit={() => handleEditBook(detailBook)}
           onDelete={() => handleDeleteBook(detailBook)}
           isDeleting={deletingId === detailBook.id}
         />
@@ -174,6 +187,14 @@ export default function BookList() {
         <AddBookForm
           onClose={() => setShowAddBookForm(false)}
           onSuccess={handleAddBookSuccess}
+        />
+      )}
+
+      {editingBook && (
+        <EditBookForm
+          book={editingBook}
+          onClose={() => setEditingBook(null)}
+          onSuccess={handleEditBookSuccess}
         />
       )}
     </>

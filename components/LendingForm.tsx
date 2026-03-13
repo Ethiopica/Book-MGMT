@@ -36,44 +36,21 @@ export default function LendingForm({ book, onClose }: LendingFormProps) {
     setError(null);
 
     try {
-      // First, check if borrower exists or create one
-      let borrowerId: string;
-
-      const { data: existingBorrower } = await supabase
+      // Create a new borrower for this loan (same email can be used by multiple borrower records)
+      const { data: newBorrower, error: borrowerError } = await supabase
         .from('borrowers')
+        .insert({
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+        })
         .select('id')
-        .eq('email', formData.email)
         .single();
 
-      if (existingBorrower) {
-        borrowerId = existingBorrower.id;
-        // Update borrower info
-        await supabase
-          .from('borrowers')
-          .update({
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            phone: formData.phone,
-            address: formData.address,
-          })
-          .eq('id', borrowerId);
-      } else {
-        // Create new borrower
-        const { data: newBorrower, error: borrowerError } = await supabase
-          .from('borrowers')
-          .insert({
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            email: formData.email,
-            phone: formData.phone,
-            address: formData.address,
-          })
-          .select('id')
-          .single();
-
-        if (borrowerError) throw borrowerError;
-        borrowerId = newBorrower.id;
-      }
+      if (borrowerError) throw borrowerError;
+      const borrowerId = newBorrower.id;
 
       // Create loan record
       const { error: loanError } = await supabase
