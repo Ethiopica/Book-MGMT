@@ -49,6 +49,9 @@ export default function LoanDetailModal({
           email: borrower.email,
           bookTitle: book.title,
           borrowerName: [borrower.first_name, borrower.last_name].filter(Boolean).join(' ') || undefined,
+          template: 'reminder',
+          borrowedDate: loan.borrowed_date,
+          daysOut,
         }),
       });
       const data = await res.json().catch(() => ({}));

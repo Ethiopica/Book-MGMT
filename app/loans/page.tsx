@@ -124,12 +124,12 @@ export default function LoansPage() {
     let anyFailed = false;
 
     for (const email of emails) {
-      // Use the first loan that matches this email to get a book title and name
       const sampleLoan = loans.find((loan) => loan.borrowers?.email?.trim() === email);
       const bookTitle = sampleLoan?.books?.title ?? '';
       const borrowerName = sampleLoan
         ? [sampleLoan.borrowers?.first_name, sampleLoan.borrowers?.last_name].filter(Boolean).join(' ')
         : undefined;
+      const daysOut = sampleLoan ? getDaysOut(sampleLoan.borrowed_date) : 0;
 
       try {
         const res = await fetch('/api/notify-borrower', {
@@ -139,6 +139,9 @@ export default function LoansPage() {
             email,
             bookTitle: bookTitle || 'Library book',
             borrowerName,
+            template: 'reminder',
+            borrowedDate: sampleLoan?.borrowed_date,
+            daysOut,
           }),
         });
         const data = await res.json().catch(() => ({}));

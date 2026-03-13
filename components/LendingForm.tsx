@@ -64,8 +64,9 @@ export default function LendingForm({ book, onClose }: LendingFormProps) {
 
       if (loanError) throw loanError;
 
-      // Send confirmation to borrower's email (they can open it on their phone)
+      // Send borrow confirmation email (when they borrow)
       const borrowerName = [formData.firstName, formData.lastName].filter(Boolean).join(' ') || undefined;
+      const borrowedDateIso = new Date().toISOString();
       try {
         const notifyRes = await fetch('/api/notify-borrower', {
           method: 'POST',
@@ -74,6 +75,8 @@ export default function LendingForm({ book, onClose }: LendingFormProps) {
             email: formData.email,
             bookTitle: book.title,
             borrowerName,
+            template: 'borrow',
+            borrowedDate: borrowedDateIso,
           }),
         });
         if (notifyRes.ok) {
