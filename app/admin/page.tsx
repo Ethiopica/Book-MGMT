@@ -6,14 +6,31 @@ import { useAuth } from '@/components/AuthProvider';
 import { useLanguage } from '@/components/LanguageProvider';
 
 type PendingUser = { id: string; email: string; approved: boolean; created_at: string };
+type PendingLendingRequest = {
+  id: string;
+  book_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  address: string | null;
+  notes: string | null;
+  status: 'pending' | 'approved' | 'rejected';
+  requested_at: string;
+  books?: { title?: string; author?: string } | null;
+};
 
 export default function AdminPage() {
   const { user, loading, isAdmin, session } = useAuth();
   const { t } = useLanguage();
   const router = useRouter();
   const [pending, setPending] = useState<PendingUser[]>([]);
+  const [requests, setRequests] = useState<PendingLendingRequest[]>([]);
   const [loadingList, setLoadingList] = useState(true);
+  const [loadingRequests, setLoadingRequests] = useState(true);
   const [approvingId, setApprovingId] = useState<string | null>(null);
+  const [approvingRequestId, setApprovingRequestId] = useState<string | null>(null);
+  const [rejectingRequestId, setRejectingRequestId] = useState<string | null>(null);
 
   useEffect(() => {
     if (loading) return;
@@ -43,7 +60,24 @@ export default function AdminPage() {
         setLoadingList(false);
       }
     };
+
+    const fetchRequests = async () => {
+      setLoadingRequests(true);
+      try {
+        const res = await fetch('/api/admin/lending-requests', {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setRequests(data);
+        }
+      } finally {
+        setLoadingRequests(false);
+      }
+    };
+
     fetchPending();
+    fetchRequests();
   }, [user, isAdmin, session?.access_token]);
 
   const handleApprove = async (userId: string) => {
@@ -58,6 +92,36 @@ export default function AdminPage() {
       if (res.ok) setPending((p) => p.filter((u) => u.id !== userId));
     } finally {
       setApprovingId(null);
+    }
+  };
+
+  const handleApproveRequest = async (requestId: string) => {
+    if (!session?.access_token) return;
+    setApprovingRequestId(requestId);
+    try {
+      const res = await fetch('/api/admin/lending-requests/approve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ requestId }),
+      });
+      if (res.ok) setRequests((r) => r.filter((x) => x.id !== requestId));
+    } finally {
+      setApprovingRequestId(null);
+    }
+  };
+
+  const handleRejectRequest = async (requestId: string) => {
+    if (!session?.access_token) return;
+    setRejectingRequestId(requestId);
+    try {
+      const res = await fetch('/api/admin/lending-requests/reject', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ requestId }),
+      });
+      if (res.ok) setRequests((r) => r.filter((x) => x.id !== requestId));
+    } finally {
+      setRejectingRequestId(null);
     }
   };
 
@@ -99,6 +163,73 @@ export default function AdminPage() {
             ))}
           </ul>
         )}
+
+        <div className="mt-10">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">{t('adminLoanRequestsTitle')}</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-6">{t('adminLoanRequestsSubtitle')}</p>
+
+          {loadingRequests ? (
+            <p className="text-slate-600 dark:text-slate-400">{t('loadingLoanRequests')}</p>
+          ) : requests.length === 0 ? (
+            <p className="text-slate-600 dark:text-slate-400">{t('noPendingLoanRequests')}</p>
+          ) : (
+            <ul className="space-y-3 max-w-3xl">
+              {requests.map((r) => (
+                <li
+                  key={r.id}
+                  className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <p className="font-semibold text-slate-900 dark:text-slate-100 break-words">
+                        {r.books?.title || t('unknownBook')}
+                        {r.books?.author ? ` - ${r.books.author}` : ''}
+                      </p>
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                        {t('requestedBy')}: {r.first_name} {r.last_name}
+                      </p>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        {t('authEmail')}: {r.email} | {t('phoneNumber')}: {r.phone}
+                      </p>
+                      {r.address && (
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                          {t('address')}: {r.address}
+                        </p>
+                      )}
+                      {r.notes && (
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                          {t('requestNotes')}: {r.notes}
+                        </p>
+                      )}
+                      <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                        {t('requestedOn')}: {new Date(r.requested_at).toLocaleDateString()}
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => handleApproveRequest(r.id)}
+                        disabled={approvingRequestId === r.id || rejectingRequestId === r.id}
+                        className="px-4 py-2 rounded-lg font-semibold bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50"
+                      >
+                        {approvingRequestId === r.id ? t('approving') : t('approveLoanRequest')}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleRejectRequest(r.id)}
+                        disabled={approvingRequestId === r.id || rejectingRequestId === r.id}
+                        className="px-4 py-2 rounded-lg font-semibold bg-red-600 text-white hover:bg-red-700 disabled:opacity-50"
+                      >
+                        {rejectingRequestId === r.id ? t('rejecting') : t('rejectLoanRequest')}
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </main>
   );

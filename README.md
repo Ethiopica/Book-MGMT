@@ -13,7 +13,8 @@ A modern web application for managing a church library, built with Next.js and S
 - 📊 **Book Status**: Real-time status tracking (Available/Borrowed)
 - ⏱️ **Days Out Counter**: Automatically calculates how many days a book has been borrowed
 - 📝 **Lending Form**: Easy-to-use form for lending books with borrower information
-- 📧 **Borrower notifications**: Optional email confirmation when a book is lent (borrowers can open it on their phone); uses [Resend](https://resend.com)
+- 📧 **Borrower notifications**: Optional email confirmation/reminder via Nodemailer + Gmail SMTP
+- 📨 **Public loan request form**: Shareable form link for customers; admin approves requests before real loans are created
 - 🎨 **Modern UI**: Beautiful, responsive design with Tailwind CSS
 
 ## Tech Stack
@@ -40,6 +41,7 @@ npm install
 5. **Cover image uploads**: Run `supabase-storage.sql` in the SQL Editor. This creates the `book-covers` storage bucket and policies. Alternatively: in Supabase go to **Storage** → **New bucket** → name `book-covers`, set **Public bucket** to ON, then run only the policy statements from `supabase-storage.sql` (the four `CREATE POLICY` blocks)
 6. **Auth (sign up / login)**: In Supabase go to **Authentication** → **Providers** and ensure **Email** is enabled. Optionally configure **Confirm email** and **Redirect URLs** under **URL Configuration** if you use email confirmation.
 7. **User approval**: Run `supabase-profiles.sql` in the SQL Editor to create the `profiles` table and trigger. New users start as unapproved; the admin approves them from the Admin page.
+8. **Public loan requests**: Run `supabase-lending-requests.sql` in the SQL Editor. This creates the `lending_requests` table used by the shareable public request form and admin approval workflow.
 
 ### 3. Configure Environment Variables
 
@@ -77,6 +79,13 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Public Lending Request Link
+
+Share this link with customers:
+- `https://your-domain/request-loan` (or `http://localhost:3000/request-loan` in development)
+
+Customers can only submit the form. They do not get direct access to your database. Requests appear in the Admin page for approve/reject.
 
 ## Deploying to Vercel (why the build might fail)
 

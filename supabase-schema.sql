@@ -36,16 +36,36 @@ CREATE TABLE IF NOT EXISTS loans (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Public loan request submissions (approved by admin before creating real loans)
+CREATE TABLE IF NOT EXISTS lending_requests (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  book_id UUID NOT NULL REFERENCES books(id) ON DELETE CASCADE,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  phone VARCHAR(20) NOT NULL,
+  address TEXT,
+  notes TEXT,
+  status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+  requested_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  reviewed_at TIMESTAMP WITH TIME ZONE,
+  reviewed_by UUID,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Create indexes for better query performance
 CREATE INDEX IF NOT EXISTS idx_loans_book_id ON loans(book_id);
 CREATE INDEX IF NOT EXISTS idx_loans_borrower_id ON loans(borrower_id);
 CREATE INDEX IF NOT EXISTS idx_loans_status ON loans(status);
 CREATE INDEX IF NOT EXISTS idx_borrowers_email ON borrowers(email);
+CREATE INDEX IF NOT EXISTS idx_lending_requests_status ON lending_requests(status);
+CREATE INDEX IF NOT EXISTS idx_lending_requests_book_id ON lending_requests(book_id);
 
 -- Enable Row Level Security (RLS)
 ALTER TABLE books ENABLE ROW LEVEL SECURITY;
 ALTER TABLE borrowers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE loans ENABLE ROW LEVEL SECURITY;
+ALTER TABLE lending_requests ENABLE ROW LEVEL SECURITY;
 
 -- Create policies to allow public read access to books
 CREATE POLICY "Allow public read access to books"

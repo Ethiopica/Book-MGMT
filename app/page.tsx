@@ -67,6 +67,12 @@ export default function LandingPage() {
                   </button>
                 </>
               )}
+              <Link
+                href="/request-loan"
+                className="inline-flex items-center justify-center min-h-[48px] px-8 rounded-lg font-semibold border border-sky-300 dark:border-sky-700 text-sky-700 dark:text-sky-300 bg-white/70 dark:bg-slate-800/70 hover:bg-sky-50 dark:hover:bg-slate-700 transition-colors"
+              >
+                {t('landingRequestLoan')}
+              </Link>
             </div>
           </div>
         </section>
