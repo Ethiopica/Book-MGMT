@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { supabase, Book, Loan } from '@/lib/supabase';
 import { useLanguage } from '@/components/LanguageProvider';
 import BookCard from '@/components/BookCard';
+import RequestLoanBookModal from '@/components/RequestLoanBookModal';
 
 export default function RequestLoanPage() {
   const { t } = useLanguage();
@@ -14,6 +15,7 @@ export default function RequestLoanPage() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [previewBook, setPreviewBook] = useState<Book | null>(null);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [formData, setFormData] = useState({
     bookId: '',
@@ -53,14 +55,22 @@ export default function RequestLoanPage() {
     return books.filter((b) => !borrowed.has(b.id));
   }, [books, loans]);
 
-  const handleSelectBook = (book: Book) => {
-    setSelectedBook(book);
-    setFormData((prev) => ({ ...prev, bookId: book.id }));
+  const handlePreviewBook = (book: Book) => {
+    setPreviewBook(book);
+    setError(null);
+  };
+
+  const handleContinueToForm = () => {
+    if (!previewBook) return;
+    setSelectedBook(previewBook);
+    setFormData((prev) => ({ ...prev, bookId: previewBook.id }));
+    setPreviewBook(null);
     setError(null);
   };
 
   const handleBackToBooks = () => {
     setSelectedBook(null);
+    setPreviewBook(null);
     setFormData((prev) => ({ ...prev, bookId: '' }));
     setError(null);
   };
@@ -142,14 +152,14 @@ export default function RequestLoanPage() {
             </button>
 
             <div className="flex gap-4 mb-6 p-3 rounded-xl bg-gray-50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-700">
-              <div className="relative w-20 shrink-0 aspect-[2/3] bg-gray-200 rounded-lg overflow-hidden">
+              <div className="relative w-24 shrink-0 aspect-[2/3] bg-gray-100 dark:bg-slate-900 rounded-lg overflow-hidden">
                 {selectedBook.cover_image_url ? (
                   <Image
                     src={selectedBook.cover_image_url}
                     alt={selectedBook.title}
                     fill
-                    className="object-cover object-center"
-                    sizes="80px"
+                    className="object-contain"
+                    sizes="96px"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-400 to-purple-500">
@@ -289,10 +299,18 @@ export default function RequestLoanPage() {
                 book={book}
                 status="available"
                 daysOut={0}
-                onClick={() => handleSelectBook(book)}
+                onClick={() => handlePreviewBook(book)}
               />
             ))}
           </div>
+        )}
+
+        {previewBook && (
+          <RequestLoanBookModal
+            book={previewBook}
+            onClose={() => setPreviewBook(null)}
+            onContinue={handleContinueToForm}
+          />
         )}
       </div>
     </main>
