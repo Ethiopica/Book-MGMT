@@ -40,14 +40,14 @@ export default function LandingPage() {
               {user && isApproved ? (
                 <Link
                   href="/library"
-                  className="inline-flex items-center justify-center min-h-[48px] px-8 rounded-lg font-semibold bg-sky-600 text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 transition-colors"
+                  className="inline-flex items-center justify-center min-h-[48px] px-8 rounded-xl font-semibold bg-sky-600 text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 transition-colors"
                 >
                   {t('landingGoToLibrary')}
                 </Link>
               ) : user && isAdmin ? (
                 <Link
                   href="/admin"
-                  className="inline-flex items-center justify-center min-h-[48px] px-8 rounded-lg font-semibold bg-sky-600 text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 transition-colors"
+                  className="inline-flex items-center justify-center min-h-[48px] px-8 rounded-xl font-semibold bg-sky-600 text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 transition-colors"
                 >
                   {t('navAdmin')}
                 </Link>
@@ -55,13 +55,13 @@ export default function LandingPage() {
                 <>
                   <button
                     onClick={() => setAuthModal('login')}
-                    className="inline-flex items-center justify-center min-h-[48px] px-8 rounded-lg font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 hover:border-sky-400 dark:hover:border-sky-500 hover:bg-sky-50 dark:hover:bg-slate-700/50 transition-colors"
+                    className="inline-flex items-center justify-center min-h-[48px] px-8 rounded-xl font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 hover:border-sky-400 dark:hover:border-sky-500 hover:bg-sky-50 dark:hover:bg-slate-700/50 transition-colors"
                   >
                     {t('navLogIn')}
                   </button>
                   <button
                     onClick={() => setAuthModal('signup')}
-                    className="inline-flex items-center justify-center min-h-[48px] px-8 rounded-lg font-semibold bg-sky-600 text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 transition-colors"
+                    className="inline-flex items-center justify-center min-h-[48px] px-8 rounded-xl font-semibold bg-sky-600 text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 transition-colors"
                   >
                     {t('navCreateAccount')}
                   </button>
@@ -69,7 +69,7 @@ export default function LandingPage() {
               )}
               <Link
                 href="/request-loan"
-                className="inline-flex items-center justify-center min-h-[48px] px-8 rounded-lg font-semibold border border-sky-300 dark:border-sky-700 text-sky-700 dark:text-sky-300 bg-white/70 dark:bg-slate-800/70 hover:bg-sky-50 dark:hover:bg-slate-700 transition-colors"
+                className="inline-flex items-center justify-center min-h-[48px] px-8 rounded-xl font-semibold border border-sky-300 dark:border-sky-700 text-sky-700 dark:text-sky-300 bg-white/70 dark:bg-slate-800/70 hover:bg-sky-50 dark:hover:bg-slate-700 transition-colors"
               >
                 {t('landingRequestLoan')}
               </Link>
@@ -107,7 +107,7 @@ export default function LandingPage() {
               </p>
               <button
                 onClick={() => setAuthModal('signup')}
-                className="shrink-0 inline-flex items-center justify-center min-h-[48px] px-8 rounded-lg font-semibold bg-sky-600 text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 transition-colors"
+                className="shrink-0 inline-flex items-center justify-center min-h-[48px] px-8 rounded-xl font-semibold bg-sky-600 text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 transition-colors"
               >
                 {t('navCreateAccount')}
               </button>

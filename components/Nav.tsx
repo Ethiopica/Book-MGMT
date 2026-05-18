@@ -145,14 +145,14 @@ export default function Nav() {
                     <button
                       type="button"
                       onClick={() => setAuthModal('login')}
-                      className="touch-target min-w-0 py-2 px-3 rounded-lg text-sm font-semibold text-sky-700 dark:text-sky-300 hover:bg-sky-50 dark:hover:bg-sky-900/30"
+                      className="touch-target min-w-0 py-2 px-3 rounded-xl text-sm font-semibold text-sky-700 dark:text-sky-300 hover:bg-sky-50 dark:hover:bg-sky-900/30"
                     >
                       {t('navLogIn')}
                     </button>
                     <button
                       type="button"
                       onClick={() => setAuthModal('signup')}
-                      className="touch-target min-w-0 py-2 px-4 rounded-lg text-sm font-semibold bg-sky-500 text-white hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-500"
+                      className="touch-target min-w-0 py-2 px-4 rounded-xl text-sm font-semibold bg-sky-500 text-white hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-500"
                     >
                       {t('navCreateAccount')}
                     </button>
@@ -289,7 +289,7 @@ export default function Nav() {
                     <button
                       type="button"
                       onClick={() => { setAuthModal('signup'); closeMenu(); }}
-                      className="w-full py-3 px-4 text-left font-semibold rounded-lg bg-sky-500 text-white hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-500"
+                      className="w-full py-3 px-4 text-left font-semibold rounded-xl bg-sky-500 text-white hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-500"
                     >
                       {t('navCreateAccount')}
                     </button>

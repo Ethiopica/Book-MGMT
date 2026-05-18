@@ -104,6 +104,10 @@ export const translations: Record<Locale, Record<string, string>> = {
     // Public loan request form
     loanRequestTitle: 'Request a Book Loan',
     loanRequestSubtitle: 'Fill this form and the admin will review your request.',
+    loanRequestPickBook: 'Tap a book cover to continue to the request form.',
+    backToBookSelection: 'Back to book list',
+    requestingBook: 'Requesting: {title}',
+    noBooksAvailableToRequest: 'No books are available to request right now.',
     chooseBook: 'Choose book',
     selectBookPlaceholder: 'Select an available book',
     submitLoanRequest: 'Submit loan request',
@@ -278,6 +282,10 @@ export const translations: Record<Locale, Record<string, string>> = {
     // Public loan request form
     loanRequestTitle: 'የመጽሃፍ ብድር ጥያቄ',
     loanRequestSubtitle: 'ይህን ቅጽ ይሙሉ፤ አስተዳዳሪው ጥያቄዎን ይመርምራል።',
+    loanRequestPickBook: 'ወደ ጥያቄ ቅጽ ለመቀጠል የመጽሃፍ ሽፋን ይንኩ።',
+    backToBookSelection: 'ወደ መጽሃፍ ዝርዝር ተመለስ',
+    requestingBook: 'የሚጠየቀው፡ {title}',
+    noBooksAvailableToRequest: 'አሁን ለመጠየቅ የሚገኝ መጽሃፍ የለም።',
     chooseBook: 'መጽሃፍ ይምረጡ',
     selectBookPlaceholder: 'የሚገኝ መጽሃፍ ይምረጡ',
     submitLoanRequest: 'የብድር ጥያቄ አስገባ',
